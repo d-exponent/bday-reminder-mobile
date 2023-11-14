@@ -1,5 +1,5 @@
 import LocalStorage from 'helpers/api/localStorage'
-import { STORE_KEYS } from 'settings/constants'
+import { STORE_KEYS } from '../../infrastructure/constants'
 
 class TokenStore {
   readonly key: string

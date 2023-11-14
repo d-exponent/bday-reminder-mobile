@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "bday-reminder-mobile",
-    "slug": "bday-reminder-mobile",
+    "name": "Don't Forget",
+    "slug": "dont't-forget",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,19 +1,25 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { Button, TextInput } from 'react-native-paper'
 
-import baseAxios from 'helpers/api/axios'
+import baseAxios, { serverErrorResponseMessageOrGeneric } from 'helpers/api/axios'
+import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
-import yup, { type stringSchema, validate } from 'validations/yup-config'
+
+import SmallErrorText from 'components/SmallErrorText'
+
+import { type IAuthSetEmailProp } from '../../types'
+import useUserNotification from 'hooks/useUserNotification'
 
 const loginDataSchema = yup
   .object()
   .shape(validate('email') as { email: stringSchema })
 
-export const LoginForm = () => {
+export const LoginForm = (props: IAuthSetEmailProp) => {
   const { loadingAction, setLoadingAction } = useLoading()
+  const { showNotification } = useUserNotification()
 
   const formControl = useForm({
     defaultValues: { email: '' },
@@ -30,8 +36,16 @@ export const LoginForm = () => {
     setLoadingAction(true)
     baseAxios
       .get(`auth/${formData.email}`)
-      .then(res => console.log(res))
-      .catch(_ => setLoadingAction(false))
+      .then(() => {
+        formControl.reset()
+        props.setEmail(formData.email.toLowerCase())
+        showNotification(`An acesss code is sent to ${formData.email.toLowerCase()}`)
+      })
+      .catch(e => {
+        setLoadingAction(false)
+        const message = serverErrorResponseMessageOrGeneric(e)
+        showNotification(message)
+      })
   }
 
   return (
@@ -47,7 +61,7 @@ export const LoginForm = () => {
           />
         )}
       />
-      {errors.email != null && <Text>{errors.email.message}</Text>}
+      {errors.email != null && <SmallErrorText text={errors.email.message} />}
 
       <Button
         loading={loadingAction}

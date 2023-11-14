@@ -1,12 +1,17 @@
-import React from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { Button, TextInput } from 'react-native-paper'
 
-import baseAxios from 'helpers/api/axios'
+import baseAxios, { serverErrorResponseMessageOrGeneric } from 'helpers/api/axios'
+import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
-import yup, { validate, type stringSchema } from 'validations/yup-config'
+
+import SmallErrorText from 'components/SmallErrorText'
+import useUserNotification from 'hooks/useUserNotification'
+
+import { type IAuthSetEmailProp } from '../../types'
 
 const signUpDataSchema = yup.object().shape(
   validate('email', 'name', 'phone') as {
@@ -16,8 +21,9 @@ const signUpDataSchema = yup.object().shape(
   }
 )
 
-export const SignUpForm = () => {
+export const SignUpForm = (props: IAuthSetEmailProp) => {
   const { loadingAction, setLoadingAction } = useLoading()
+  const { showNotification } = useUserNotification()
 
   const formControl = useForm({
     resolver: yupResolver(signUpDataSchema),
@@ -38,8 +44,16 @@ export const SignUpForm = () => {
     setLoadingAction(true)
     baseAxios
       .post('users/me/sign-up', formData)
-      .then(() => console.log('done'))
-      .catch(_ => setLoadingAction(false))
+      .then(() => {
+        formControl.reset()
+        props.setEmail(formData.email.toLowerCase())
+        showNotification('Sign up successfull 🎉')
+      })
+      .catch(e => {
+        setLoadingAction(false)
+        const message = serverErrorResponseMessageOrGeneric(e)
+        showNotification(message)
+      })
   }
 
   return (
@@ -56,7 +70,7 @@ export const SignUpForm = () => {
             />
           )}
         />
-        {errors.name != null && <Text>{errors.name.message}</Text>}
+        {errors.name != null && <SmallErrorText text={errors.name.message} />}
 
         <Controller
           control={formControl.control}
@@ -69,7 +83,7 @@ export const SignUpForm = () => {
             />
           )}
         />
-        {errors.email != null && <Text>{errors.email.message}</Text>}
+        {errors.email != null && <SmallErrorText text={errors.email.message} />}
 
         <Controller
           control={formControl.control}
@@ -82,7 +96,7 @@ export const SignUpForm = () => {
             />
           )}
         />
-        {errors.phone != null && <Text>{errors.phone.message}</Text>}
+        {errors.phone != null && <SmallErrorText text={errors.phone.message} />}
       </View>
 
       <Button

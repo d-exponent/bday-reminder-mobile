@@ -1,4 +1,4 @@
-import { VALID_REGEX } from 'settings/constants'
+import { VALID_REGEX } from '../../infrastructure/constants'
 import * as yup from 'yup'
 
 yup.addMethod<yup.StringSchema>(yup.string, 'email', function email() {

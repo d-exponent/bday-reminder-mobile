@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { STORE_KEYS } from 'settings/constants'
+import { STORE_KEYS } from 'infrastructure/constants'
 
 interface ISetItemParams {
   key: string
