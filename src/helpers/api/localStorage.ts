@@ -19,6 +19,7 @@ class LocalStorage {
     await AsyncStorage.removeItem(key)
   }
 
+  // Use wisely
   static async removeAll() {
     await AsyncStorage.multiRemove(Object.values(STORE_KEYS))
   }

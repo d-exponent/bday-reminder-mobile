@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/return-await */
-import { useEffect } from 'react'
+import React from 'react'
 
 import baseAxios from 'helpers/api/axios'
 import { axiosRefresh } from '../helpers/api/axios'
 import { accessTokenStore as ats } from '../helpers/api/tokenStorage'
 
 const useAxiosPrivate = () => {
-  useEffect(() => {
+  React.useEffect(() => {
     // Attach access token to the outgoing request
     const requestInterceptor = baseAxios.interceptors.request.use(
       async config => {
@@ -27,7 +27,7 @@ const useAxiosPrivate = () => {
     }
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     let responseAborter = () => {} // see Line 59
 
     const responseInterceptor = baseAxios.interceptors.response.use(

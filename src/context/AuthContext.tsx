@@ -1,18 +1,18 @@
 import LocalStorage from 'helpers/api/localStorage'
-import React, { createContext, useEffect, useState } from 'react'
+import React from 'react'
 import { type IReactChildren, type IAuthValue } from '../../@types.birthday'
 import { axiosRefresh } from '../helpers/api/axios'
 import { accessTokenStore, refreshTokenStore } from '../helpers/api/tokenStorage'
 
-const AuthContext = createContext<IAuthValue | null>(null)
+const AuthContext = React.createContext<IAuthValue | null>(null)
 
 const AuthContextProvider = (props: IReactChildren) => {
-  const [authStatus, setAuthStatus] = useState<boolean | null>(null)
+  const [authStatus, setAuthStatus] = React.useState<boolean | null>(null)
 
-  useEffect(() => {
-    let aborter = () => {} // See line 21 and 38
+  React.useEffect(() => {
+    let aborter = () => {} // See line 19
 
-    const handleAuthStatus = async () => {
+    const fetchAuthStatus = async () => {
       if (authStatus === null) {
         try {
           const { promise, abort } = await axiosRefresh()
@@ -33,11 +33,11 @@ const AuthContextProvider = (props: IReactChildren) => {
       }
     }
 
-    void handleAuthStatus()
+    void fetchAuthStatus()
     return aborter
   }, [])
 
-  const handleLogout = async () => {
+  const onLogoutPress = async () => {
     try {
       await LocalStorage.removeAll()
       setAuthStatus(false)
@@ -48,7 +48,7 @@ const AuthContextProvider = (props: IReactChildren) => {
 
   const values: IAuthValue = {
     status: authStatus,
-    logout: handleLogout,
+    logout: onLogoutPress,
     setStatus: (status: boolean): void => {
       setAuthStatus(status)
     }

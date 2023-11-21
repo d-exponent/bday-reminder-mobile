@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -12,7 +12,7 @@ const PressableText = (props: IPressabelTextProps): React.JSX.Element => (
   </Pressable>
 )
 
-const PressAbles = styled.View`
+const Pressables = styled.View`
   background-color: ${props => props.theme.colors.bg.primary};
   flex-direction: row;
   justify-content: space-around;
@@ -20,7 +20,7 @@ const PressAbles = styled.View`
   height: 40px;
 `
 export const LoginSignUp = (props: IAuthSetEmailProp) => {
-  const [showLogin, setShowLogin] = useState(true)
+  const [showLogin, setShowLogin] = React.useState(true)
 
   // onPressLogin and onPressSignUp are designed to remove redundant mounting of the forms
   const onPressLogin = () => {
@@ -33,10 +33,10 @@ export const LoginSignUp = (props: IAuthSetEmailProp) => {
 
   return (
     <View>
-      <PressAbles>
+      <Pressables>
         <PressableText text="Login" onPress={onPressLogin} />
         <PressableText text="Sign Up" onPress={onPressSignUp} />
-      </PressAbles>
+      </Pressables>
 
       <View>
         {showLogin && <LoginForm setEmail={props.setEmail} />}

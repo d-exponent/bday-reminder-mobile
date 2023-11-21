@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
+
 import { LoginSignUp } from '../components/LoginSignUp'
 import { SubmitAccessCode } from '../components/forms/SubmitAccessCode'
 
 // background-color: ${props => props.theme.colors.ui.primary};
-const Form = styled.View`
-  
-`
+const Form = styled.View``
 
 const UserAuth = () => {
-  const [showSubmitAccessCode, setShowSubmitAccessCode] = useState(false)
-  const [userEmail, setUserEmail] = useState<string | null>(null)
-  const [exitSubmitCodeForm, setExitSubmitCodeForm] = useState<boolean | null>(null)
+  const [showSubmitAccessCode, setShowSubmitAccessCode] = React.useState(false)
+  const [userEmail, setUserEmail] = React.useState<string | null>(null)
+  const [exitSubmitCodeForm, setExitSubmitCodeForm] = React.useState<boolean | null>(null)
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (typeof userEmail === 'string' && userEmail.length > 0) {
       setShowSubmitAccessCode(true)
     }
   }, [userEmail])
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Reset all the states
     if (exitSubmitCodeForm === true) {
       userEmail !== null && setUserEmail(null)

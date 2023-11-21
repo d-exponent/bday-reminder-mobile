@@ -1,8 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup'
 import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, TextInput } from 'react-native-paper'
+import { Controller, useForm } from 'react-hook-form'
 
 import baseAxios, { serverErrorResponseMessageOrGeneric } from 'helpers/api/axios'
 import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'

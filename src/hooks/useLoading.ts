@@ -1,7 +1,7 @@
 import React from 'react'
 
 const useLoading = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   return {
     loadingAction: isLoading,

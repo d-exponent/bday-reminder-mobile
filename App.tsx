@@ -1,5 +1,5 @@
-import React from 'react'
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar'
+import React from 'react'
 import { StatusBar } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
 import styled from 'styled-components/native'
@@ -18,25 +18,23 @@ const SafeAreaView = styled.SafeAreaView`
 
 const Screen = styled.View`
   flex: 1;
-  border: 3px solid gray;
+  border: 3px solid gray; 
 `
 
 const App = () => {
   return (
     <SafeAreaView>
       <ThemeContextProvider>
-        <AuthContextProvider>
           <PaperProvider>
             <UserNotificationContextProvider>
               <Screen>
-                <>
+                <AuthContextProvider>
                   <UserAuth />
                   <ExpoStatusBar style="auto" />
-                </>
+                </AuthContextProvider>
               </Screen>
             </UserNotificationContextProvider>
           </PaperProvider>
-        </AuthContextProvider>
       </ThemeContextProvider>
     </SafeAreaView>
   )

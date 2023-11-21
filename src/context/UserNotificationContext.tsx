@@ -1,15 +1,15 @@
-import React, { createContext, useState } from 'react'
+import React from 'react'
 import { Portal, Snackbar } from 'react-native-paper'
 import {
   type IReactChildren,
   type IUserNotificationValue
 } from '../../@types.birthday'
 
-const UserNotificationContext = createContext<IUserNotificationValue | null>(null)
+const UserNotificationContext = React.createContext<IUserNotificationValue | null>(null)
 
 const UserNotificationContextProvider = (props: IReactChildren) => {
-  const [snakcBarVisible, setSnackBarVisible] = useState(false)
-  const [snackbarMessage, setSnackBarMessage] = useState('')
+  const [snakcBarVisible, setSnackBarVisible] = React.useState(false)
+  const [snackbarMessage, setSnackBarMessage] = React.useState('')
 
   const hideSnackBar = () => setSnackBarVisible(false)
 
@@ -20,7 +20,6 @@ const UserNotificationContextProvider = (props: IReactChildren) => {
 
   return (
     <UserNotificationContext.Provider value={{ showNotification }}>
-      <>
         {props.children}
         <Portal>
           <Snackbar
@@ -34,7 +33,6 @@ const UserNotificationContextProvider = (props: IReactChildren) => {
             {snackbarMessage}
           </Snackbar>
         </Portal>
-      </>
     </UserNotificationContext.Provider>
   )
 }
