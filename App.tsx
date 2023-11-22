@@ -1,42 +1,29 @@
-import { StatusBar as ExpoStatusBar } from 'expo-status-bar'
+import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
-import { StatusBar } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
-import styled from 'styled-components/native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import AuthContextProvider from 'context/AuthContext'
-import ThemeContextProvider from 'context/ThemeContext'
-import UserNotificationContextProvider from 'context/UserNotificationContext'
+import StyledComponentsThemeProvider from 'context/StyledComponentsThemeContext'
+import UserNotificationProvider from 'context/UserNotificationContext'
+import AuthenticationProvider from 'features/authentication/context/AuthenticationProvider'
 
-import UserAuth from 'features/auth/screens/UserAuthentication'
-
-const SafeAreaView = styled.SafeAreaView`
-  flex: 1;
-  ${StatusBar.currentHeight !== null && `padding-top: ${StatusBar.currentHeight}px`};
-  background-color: ${props => props.theme.colors.bg.secondary};
-`
-
-const Screen = styled.View`
-  flex: 1;
-  border: 3px solid gray; 
-`
+import StackNavigators from 'navigators/stack.navigators'
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <ThemeContextProvider>
-          <PaperProvider>
-            <UserNotificationContextProvider>
-              <Screen>
-                <AuthContextProvider>
-                  <UserAuth />
-                  <ExpoStatusBar style="auto" />
-                </AuthContextProvider>
-              </Screen>
-            </UserNotificationContextProvider>
-          </PaperProvider>
-      </ThemeContextProvider>
-    </SafeAreaView>
+    <PaperProvider>
+      <StyledComponentsThemeProvider>
+        <UserNotificationProvider>
+          <AuthenticationProvider>
+            <SafeAreaProvider>
+              <NavigationContainer>
+                <StackNavigators />
+              </NavigationContainer>
+            </SafeAreaProvider>
+          </AuthenticationProvider>
+        </UserNotificationProvider>
+      </StyledComponentsThemeProvider>
+    </PaperProvider>
   )
 }
 

@@ -1,8 +1,8 @@
-import { VALID_REGEX } from '../../infrastructure/constants'
+import settings from 'infrastructure/settings'
 import * as yup from 'yup'
 
 yup.addMethod<yup.StringSchema>(yup.string, 'email', function email() {
-  return this.matches(VALID_REGEX.email, {
+  return this.matches(settings.validRegex.email, {
     message: 'Invalid email address',
     name: 'email',
     excludeEmptyString: false
@@ -10,7 +10,7 @@ yup.addMethod<yup.StringSchema>(yup.string, 'email', function email() {
 })
 
 yup.addMethod<yup.StringSchema>(yup.string, 'phone', function phone() {
-  return this.matches(VALID_REGEX.phone, {
+  return this.matches(settings.validRegex.phone, {
     message: 'Include the country code',
     name: 'phone',
     excludeEmptyString: true
@@ -18,7 +18,7 @@ yup.addMethod<yup.StringSchema>(yup.string, 'phone', function phone() {
 })
 
 yup.addMethod<yup.StringSchema>(yup.string, 'accessCode', function () {
-  return this.matches(VALID_REGEX.accessCode, {
+  return this.matches(settings.validRegex.accessCode, {
     name: 'accessCode',
     message: 'Invalid access code',
     excludeEmptyString: false
@@ -36,7 +36,7 @@ declare module 'yup' {
 
 type validateArgs = Array<'phone' | 'email' | 'name' | 'accessCode'>
 
-interface Ivalidators {
+interface Validators {
   phone: stringSchema
   email: stringSchema
   accessCode: stringSchema
@@ -46,7 +46,7 @@ interface Ivalidators {
 const validate = (...args: validateArgs): Record<string, stringSchema> => {
   if (args.length === 0) throw new Error('Pass at least one valid argument')
 
-  const validators: Partial<Ivalidators> = {}
+  const validators: Partial<Validators> = {}
 
   args.forEach(arg => {
     switch (arg) {

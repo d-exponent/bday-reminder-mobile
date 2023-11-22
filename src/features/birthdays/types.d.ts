@@ -1,4 +1,4 @@
-export interface IBirthday {
+export interface BirthdayInfo {
   name: string
   month: number
   day: number
