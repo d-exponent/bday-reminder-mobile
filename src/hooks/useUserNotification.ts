@@ -1,10 +1,10 @@
-import React from 'react'
 import {
   UserNotificationContext,
-  type IUserNotificationValue
+  type UserNotificationContextValue
 } from 'context/UserNotificationContext'
+import React from 'react'
 
 const useUserNotification = () =>
-  React.useContext(UserNotificationContext) as IUserNotificationValue
+  React.useContext(UserNotificationContext) as UserNotificationContextValue
 
 export default useUserNotification

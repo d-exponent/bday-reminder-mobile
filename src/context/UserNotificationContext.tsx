@@ -1,13 +1,15 @@
 import React from 'react'
 import { Portal, Snackbar } from 'react-native-paper'
-import {
-  type IReactChildren,
-  type IUserNotificationValue
-} from '../../@types.birthday'
+import { type ReactChildrenProp } from '../../@types.birthday'
 
-const UserNotificationContext = React.createContext<IUserNotificationValue | null>(null)
+interface UserNotificationContextValue {
+  showNotification: (msg: string) => void
+}
 
-const UserNotificationContextProvider = (props: IReactChildren) => {
+const UserNotificationContext =
+  React.createContext<UserNotificationContextValue | null>(null)
+
+const UserNotificationProvider = (props: ReactChildrenProp) => {
   const [snakcBarVisible, setSnackBarVisible] = React.useState(false)
   const [snackbarMessage, setSnackBarMessage] = React.useState('')
 
@@ -20,25 +22,28 @@ const UserNotificationContextProvider = (props: IReactChildren) => {
 
   return (
     <UserNotificationContext.Provider value={{ showNotification }}>
-        {props.children}
+      <>
         <Portal>
           <Snackbar
+            elevation={5}
             visible={snakcBarVisible}
             onDismiss={hideSnackBar}
             action={{
-              label: 'Hide',
+              label: 'Close',
               onPress: hideSnackBar
             }}
           >
             {snackbarMessage}
           </Snackbar>
         </Portal>
+        {props.children}
+      </>
     </UserNotificationContext.Provider>
   )
 }
 
 export {
-  UserNotificationContextProvider as default,
   UserNotificationContext,
-  type IUserNotificationValue
+  UserNotificationProvider as default,
+  type UserNotificationContextValue
 }

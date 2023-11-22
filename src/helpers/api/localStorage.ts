@@ -1,27 +1,20 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { STORE_KEYS } from 'infrastructure/constants'
+import * as SecureStore from 'expo-secure-store'
 
-interface ISetItemParams {
+interface SetItemsParams {
   key: string
   value: string
 }
-
 class LocalStorage {
-  async setItem(params: ISetItemParams) {
-    await AsyncStorage.setItem(params.key, params.value)
+  public async setItem(params: SetItemsParams) {
+    await SecureStore.setItemAsync(params.key, params.value)
   }
 
-  async getItem(key: string) {
-    return await AsyncStorage.getItem(key)
+  public async getItem(key: string) {
+    return await SecureStore.getItemAsync(key)
   }
 
-  async removeItem(key: string) {
-    await AsyncStorage.removeItem(key)
-  }
-
-  // Use wisely
-  static async removeAll() {
-    await AsyncStorage.multiRemove(Object.values(STORE_KEYS))
+  public async removeItem(key: string) {
+    await SecureStore.deleteItemAsync(key)
   }
 }
 
