@@ -1,10 +1,11 @@
 import React from 'react'
-import { ScrollView, Text, View } from 'react-native'
-import { ActivityIndicator, Button } from 'react-native-paper'
+import { ScrollView, View } from 'react-native'
+import { Button } from 'react-native-paper'
 import styled from 'styled-components/native'
 
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
-import { BirthdaysInfoList } from '../components/birthday-info-list.components'
+import { BirthdaysInfoList } from '../components/birthday-info-list.component'
+import { LoadingBirthdaysInfoSpinnerBox, EmptyBirthdaysInfoBox } from '../components/view-birthday-info-children.components'
 
 import { type BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import SafeAreaBox from 'components/wrappers/safe-area-box.component'
@@ -15,14 +16,7 @@ import type {
 import { type BirthdayInfo } from '../types'
 
 const BirthdayBigBox = styled.View`
-  flex: 3;
-`
-const ActivityIndicatorWrapper = styled(BirthdayBigBox)`
-  justify-content: center;
-`
-
-const EmptyBirthdayTextWrapper = styled(ActivityIndicatorWrapper)`
-  align-items: center;
+  flex: 1;
 `
 
 type Props = BottomTabScreenProps<BTNL & SNL, 'Profile'>
@@ -49,38 +43,16 @@ const Birthdays = (props: Props) => {
   const isNull = birthdays === null
   return (
     <SafeAreaBox>
-      {isNull && (
-        <BirthdayBigBox>
-          <ActivityIndicatorWrapper>
-            <ActivityIndicator animating={true} size="large" />
-          </ActivityIndicatorWrapper>
-          <Button
-            onPress={() => {
-              props.navigation.navigate('UploadNewBirthday')
-            }}
-          >
-            Add a new Birthday
-          </Button>
-        </BirthdayBigBox>
-      )}
+      <BirthdayBigBox>
+        {isNull && <LoadingBirthdaysInfoSpinnerBox />}
+        {!isNull && birthdays.length === 0 && <EmptyBirthdaysInfoBox />}
 
-      {!isNull && birthdays.length === 0 && (
-        <BirthdayBigBox>
-          <EmptyBirthdayTextWrapper>
-            <Text>You have no saved birthdays</Text>
-          </EmptyBirthdayTextWrapper>
-        </BirthdayBigBox>
-      )}
-
-      {!isNull && birthdays.length > 0 && (
-        <BirthdayBigBox>
+        {/* TODO: Replace Scroll VIew with FlatList */}
+        {!isNull && birthdays.length > 0 && (
           <ScrollView>
             <BirthdaysInfoList birthdaysInfo={birthdays} />
           </ScrollView>
-        </BirthdayBigBox>
-      )}
-
-      {birthdays !== null && (
+        )}
         <View>
           <Button
             onPress={() => {
@@ -90,7 +62,7 @@ const Birthdays = (props: Props) => {
             Add a new Birthday
           </Button>
         </View>
-      )}
+      </BirthdayBigBox>
     </SafeAreaBox>
   )
 }

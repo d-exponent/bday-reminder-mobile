@@ -1,16 +1,18 @@
-export const fonts = {
+import type { FontSizes, FontWeights, Fonts } from './types.theme'
+
+export const fonts: Fonts = {
   body: 'Oswald_400Regular',
   heading: 'Lato_400Regular',
   monospace: 'Oswald_400Regular'
 }
 
-export const fontWeights = {
+export const fontWeights: FontWeights = {
   regular: 400,
   medium: 500,
   bold: 700
 }
 
-export const fontSizes = {
+export const fontSizes: FontSizes = {
   formWarn: '8px',
   caption: '12px',
   button: '14px',

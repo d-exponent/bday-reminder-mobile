@@ -1,15 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native'
 
-const SmallRedText = styled.Text`
-  font-size: ${props => props.theme.fontSizes.caption};
+import { type StyledWithThemeProp } from '../../../@types.birthday'
+
+const SmallRedText = styled.Text<StyledWithThemeProp>`
+  font-size: ${props => props.theme.fontSizes.formWarn};
   color: ${props => props.theme.colors.text.error};
 `
 
-interface Props {
-  text: string | undefined
-}
-
-export const SmallErrorText = (props: Props) => (
+export const SmallErrorText = (props: { text: string | undefined }) => (
   <SmallRedText>{props.text}</SmallRedText>
 )

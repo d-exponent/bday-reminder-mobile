@@ -3,11 +3,13 @@ import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Pressable } from 'react-native'
-import { TextInput } from 'react-native-paper'
 import styled from 'styled-components/native'
 
-import { SmallErrorText } from 'components/ui/small-error-text.component'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
+import {
+  TextInPutWithErrorText,
+  type Errors
+} from 'components/forms/text-input-with-error-text.components'
 import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
 import useUserNotification from 'hooks/useUserNotification'
@@ -84,15 +86,14 @@ const GetAccessCodeForm = (props: Props) => {
             name="email"
             control={formControl.control}
             render={({ field }) => (
-              <TextInput
+              <TextInPutWithErrorText
                 label="Email Address"
                 value={field.value}
                 onChangeText={field.onChange}
-                error={errors.email != null}
+                errors={errors.email as Errors}
               />
             )}
           />
-          {errors.email != null && <SmallErrorText text={errors.email.message} />}
         </InputWrapper>
 
         <SquareButton

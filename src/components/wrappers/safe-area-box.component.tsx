@@ -4,24 +4,26 @@ import styled from 'styled-components/native'
 
 import { type ReactChildrenProp } from '../../../@types.birthday'
 
-const SafeBox = styled.View<{
-  $paddingTop: number
-  $paddingLeft: number
-  $paddingRight: number
-  $paddingBottom: number
-}>`
+interface SafeBoxStyledProps {
+  paddingTop: number
+  paddingLeft: number
+  paddingRight: number
+  paddingBottom: number
+}
+
+const SafeBox = styled.View<SafeBoxStyledProps>`
   flex: 1;
-  padding-top: ${props => props.$paddingTop}px;
-  padding-bottom: ${props => props.$paddingBottom}px;
-  padding-left: ${props => props.$paddingLeft}px;
-  padding-right: ${props => props.$paddingRight}px;
+  padding-top: ${props => props.paddingTop}px;
+  padding-bottom: ${props => props.paddingBottom}px;
+  padding-left: ${props => props.paddingLeft}px;
+  padding-right: ${props => props.paddingRight}px;
 `
 
-export interface ISaveAreaBoxProps extends ReactChildrenProp {
+interface SaveAreaBoxProps extends ReactChildrenProp {
   disableSafeArea?: boolean
 }
 
-const SafeAreaBox = ({ disableSafeArea = false, ...props }: ISaveAreaBoxProps) => {
+const SafeAreaBox = ({ disableSafeArea = false, ...props }: SaveAreaBoxProps) => {
   const safeAreaInsets = useSafeAreaInsets()
 
   const insets = React.useMemo((): EdgeInsets => {
@@ -38,10 +40,10 @@ const SafeAreaBox = ({ disableSafeArea = false, ...props }: ISaveAreaBoxProps) =
 
   return (
     <SafeBox
-      $paddingLeft={insets.left}
-      $paddingRight={insets.right}
-      $paddingTop={insets.top}
-      $paddingBottom={insets.bottom}
+      paddingLeft={insets.left}
+      paddingRight={insets.right}
+      paddingTop={insets.top}
+      paddingBottom={insets.bottom}
     >
       {props.children}
     </SafeBox>

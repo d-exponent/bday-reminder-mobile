@@ -1,5 +1,7 @@
 // To aid in development, both light and dark themes will point to the same theme
-const theme = {
+import type { ColorTheme, Colors } from './types.theme'
+
+const colorTheme: ColorTheme = {
   brand: {
     primary: '#2182BD',
     secondary: '#5282BD',
@@ -29,4 +31,4 @@ const theme = {
 }
 
 // A dark theme hasn't been designed for the app yet. For now we will default to the same theme for both.
-export const colors = { lightTheme: theme, darkTheme: theme }
+export const colors: Colors = { lightTheme: colorTheme, darkTheme: colorTheme }

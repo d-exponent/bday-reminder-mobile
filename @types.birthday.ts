@@ -1,3 +1,4 @@
+import { type Theme } from 'context/StyledComponentsThemeContext'
 import { type ReactNode } from 'react'
 
 // PROP TYPES
@@ -11,4 +12,8 @@ export interface IUser {
   phone: string
   id: string
   role: string
+}
+
+export interface StyledWithThemeProp {
+  theme: Theme
 }

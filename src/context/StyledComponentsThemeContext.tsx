@@ -4,10 +4,29 @@ import React from 'react'
 import { ThemeProvider } from 'styled-components/native'
 
 import { theme as appTheme } from 'infrastructure/theme'
+import type {
+  ColorTheme,
+  FontSizes,
+  FontWeights,
+  Fonts,
+  LineHeights,
+  Sizes,
+  Space
+} from 'infrastructure/theme/types.theme'
 import { type ReactChildrenProp } from '../../@types.birthday'
 
 interface StyledComponentsThemeContextValue {
   toggleTheme: () => void
+}
+
+interface Theme {
+  colors: ColorTheme
+  space: Space
+  lineHeights: LineHeights
+  sizes: Sizes
+  fonts: Fonts
+  fontSizes: FontSizes
+  fontWeights: FontWeights
 }
 
 const StyledComponentsThemeContext =
@@ -19,7 +38,7 @@ const StyledComponentsThemeProvider = (props: ReactChildrenProp) => {
   useOswald({ Oswald_400Regular })
   useLato({ Lato_400Regular })
 
-  const theme = React.useMemo(() => {
+  const theme = React.useMemo<Theme>(() => {
     const { colors } = appTheme
     return {
       ...appTheme,
@@ -38,4 +57,4 @@ const StyledComponentsThemeProvider = (props: ReactChildrenProp) => {
   )
 }
 
-export default StyledComponentsThemeProvider
+export { StyledComponentsThemeProvider as default, type Theme }

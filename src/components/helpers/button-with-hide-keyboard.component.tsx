@@ -11,18 +11,23 @@ type Mode =
   | undefined
 
 interface Props {
-  loading?: boolean
   text: string
+  loading?: boolean
   mode?: Mode
   disabled?: boolean
   onPress: () => void
 }
 
-export const ButtonWithHideKeyboard = (props: Props) => (
+export const ButtonWithHideKeyboard = ({
+  loading = false,
+  mode = 'contained',
+  disabled = false,
+  ...props
+}: Props) => (
   <Button
-    loading={props.loading ?? false}
-    mode={props.mode ?? 'contained'}
-    disabled={props.disabled ?? false}
+    loading={loading}
+    mode={mode}
+    disabled={disabled}
     onPress={() => {
       hideKeyboard()
       props.onPress()

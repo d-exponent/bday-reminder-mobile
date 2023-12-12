@@ -80,17 +80,18 @@ const UploadBirthdayForm = (props: Props) => {
     formState: { errors }
   } = formControl
 
-  const uploadBirthday = async (birthday: FormData) => {
+  const uploadBirthday = async (birthdayData: FormData) => {
     try {
       showNotification('uploading birthday')
       const url = 'users/me/birthdays'
-      const response = await axiosPrivate.post(url, birthday, {
+      const response = await axiosPrivate.post(url, birthdayData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      const successMessage = `${response.data.data.name}'s birthday was added successfully`
-      showNotification(successMessage)
+      showNotification(
+        `${response.data.data.name}'s birthday was added successfully`
+      )
     } catch (e) {
       showNotification(handleFetchErrorMessage(e))
     }
@@ -104,8 +105,9 @@ const UploadBirthdayForm = (props: Props) => {
     showNotification('Processing...')
     const formData = new FormData()
 
-    if (imageUri?.length != null) formData.append('cover', imageUri)
+    if (typeof imageUri === 'string') formData.append('cover', imageUri)
 
+    // Some fields are optional hence this mildly elaborate setup.
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== '') {
         formData.append(key, value.toString())

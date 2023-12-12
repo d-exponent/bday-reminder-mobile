@@ -44,6 +44,7 @@ const CallToActionContainer = styled.View`
   flex: 1;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
 `
 
 type Props = NativeStackScreenProps<StackNavigatorsList, 'Home'>
