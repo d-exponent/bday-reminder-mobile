@@ -5,7 +5,10 @@ import styled from 'styled-components/native'
 
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { BirthdaysInfoList } from '../components/birthday-info-list.component'
-import { LoadingBirthdaysInfoSpinnerBox, EmptyBirthdaysInfoBox } from '../components/view-birthday-info-children.components'
+import {
+  LoadingBirthdaysInfoSpinnerBox,
+  EmptyBirthdaysInfoBox
+} from '../components/view-birthday-info-children.components'
 
 import { type BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import SafeAreaBox from 'components/wrappers/safe-area-box.component'

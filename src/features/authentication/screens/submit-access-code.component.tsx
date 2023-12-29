@@ -2,7 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { View } from 'react-native'
-import { TextInput } from 'react-native-paper'
 
 import baseAxios, { handleFetchErrorMessage } from 'helpers/api/axios'
 import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
@@ -10,10 +9,13 @@ import useLoading from 'hooks/useLoading'
 import useUserNotification from 'hooks/useUserNotification'
 import { Controller, useForm } from 'react-hook-form'
 
-import { SmallErrorText } from 'components/ui/small-error-text.component'
 import useUserAuthentication from 'features/authentication/hooks/useUserAuthentication'
 import { handleSaveTokens } from 'helpers/api/tokenStorage'
 
+import {
+  TextInPutWithErrorText,
+  type Errors
+} from 'components/forms/text-input-with-error-text.components'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
 import { type StackNavigatorsList } from 'navigators/types'
 import { SquareButton } from '../styles'
@@ -76,17 +78,15 @@ export const SubmitAccessCodeForm = (props: Props) => {
             name="accessCode"
             control={formControl.control}
             render={({ field }) => (
-              <TextInput
+              <TextInPutWithErrorText
                 label="Access Code"
                 value={field.value}
                 onChangeText={field.onChange}
-                error={errors.accessCode != null}
+                errors={errors.accessCode as Errors}
               />
             )}
           />
-          {errors.accessCode != null && (
-            <SmallErrorText text={errors.accessCode.message} />
-          )}
+
         </View>
         <View>
           <SquareButton

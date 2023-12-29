@@ -4,15 +4,14 @@ import * as ImagePicker from 'expo-image-picker'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
-import { TextInput } from 'react-native-paper'
 
 import yup from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
 import useUserNotification from 'hooks/useUserNotification'
 
 import { ButtonWithHideKeyboard } from 'components/helpers/button-with-hide-keyboard.component'
-import { SmallErrorText } from 'components/ui/small-error-text.component'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
+import { type Errors, TextInPutWithErrorText } from 'components/forms/text-input-with-error-text.components'
 import { handleFetchErrorMessage } from 'helpers/api/axios'
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { type StackNavigatorsList } from 'navigators/types'
@@ -125,91 +124,82 @@ const UploadBirthdayForm = (props: Props) => {
             control={formControl.control}
             name="name"
             render={({ field }) => (
-              <TextInput
-                label="Name"
+              <TextInPutWithErrorText
+                label='Name'
                 value={field.value}
                 onChangeText={field.onChange}
-                error={errors.name != null}
-              />
+                errors={errors.name as Errors}/>
             )}
           />
-          {errors.name != null && <SmallErrorText text={errors.name.message} />}
 
           <View>
             <Controller
               control={formControl.control}
               name="day"
               render={({ field }) => (
-                <TextInput
+                <TextInPutWithErrorText
                   label="Day 1 - 31"
                   value={field.value + ''}
                   onChangeText={field.onChange}
-                  error={errors.day != null}
+                  errors={errors.day as Errors}
                 />
               )}
             />
-            {errors.day != null && <SmallErrorText text={errors.day.message} />}
 
             <Controller
               control={formControl.control}
               name="month"
               render={({ field }) => (
-                <TextInput
+                <TextInPutWithErrorText
                   label="Month 1 - 12"
                   value={field.value + ''}
                   onChangeText={field.onChange}
-                  error={errors.month != null}
+                  errors={errors.month as Errors}
                 />
               )}
             />
-            {errors.month != null && <SmallErrorText text={errors.month.message} />}
           </View>
 
           <Controller
             control={formControl.control}
             name="email"
             render={({ field }) => (
-              <TextInput
+              <TextInPutWithErrorText
                 label="Email Address"
                 value={field.value}
                 onChangeText={field.onChange}
-                error={errors.email != null}
+                errors={errors.email as Errors}
               />
             )}
           />
-          {errors.email != null && <SmallErrorText text={errors.email.message} />}
 
           <Controller
             control={formControl.control}
             name="phone"
             render={({ field }) => (
-              <TextInput
+              <TextInPutWithErrorText
                 label="Phone Number format +123#########"
                 value={field.value}
                 onChangeText={field.onChange}
-                error={errors.phone != null}
+                errors={errors.phone as Errors}
               />
             )}
           />
-          {errors.phone != null && <SmallErrorText text={errors.phone.message} />}
 
           <Controller
             control={formControl.control}
             name="comments"
             render={({ field }) => (
-              <TextInput
-                multiline
+              <TextInPutWithErrorText
+                multiline={true}
                 numberOfLines={7}
                 label="Say something special"
                 value={field.value}
                 onChangeText={field.onChange}
-                error={errors.comments != null}
+                errors={errors.comments as Errors}
               />
             )}
           />
-          {errors.comments != null && (
-            <SmallErrorText text={errors.comments.message} />
-          )}
         </View>
 
         <View>

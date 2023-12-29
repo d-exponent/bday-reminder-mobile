@@ -3,8 +3,12 @@ import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Pressable, View } from 'react-native'
-import { TextInput } from 'react-native-paper'
 import styled from 'styled-components/native'
+
+import {
+  TextInPutWithErrorText,
+  type Errors
+} from 'components/forms/text-input-with-error-text.components'
 
 import baseAxios, {
   handleFetchErrorMessage,
@@ -13,7 +17,6 @@ import baseAxios, {
 import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
 
-import { SmallErrorText } from 'components/ui/small-error-text.component'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
 import useUserNotification from 'hooks/useUserNotification'
 
@@ -91,46 +94,44 @@ const SignUpForm = (props: Props) => {
               control={formControl.control}
               name="name"
               render={({ field }) => (
-                <TextInput
+                <TextInPutWithErrorText
                   label="Full Names"
                   value={field.value}
                   onChangeText={field.onChange}
-                  activeOutlineColor="gray"
-                  error={errors.name != null}
+                  errors={errors.name as Errors}
                 />
               )}
             />
-            {errors.name != null && <SmallErrorText text={errors.name.message} />}
+
           </InputWrapper>
           <InputWrapper>
             <Controller
               control={formControl.control}
               name="email"
               render={({ field }) => (
-                <TextInput
+                <TextInPutWithErrorText
                   label="Email Address"
                   value={field.value}
                   onChangeText={field.onChange}
-                  error={errors.email != null}
+                  errors={errors.email as Errors}
                 />
               )}
             />
-            {errors.email != null && <SmallErrorText text={errors.email.message} />}
+
           </InputWrapper>
           <InputWrapper>
             <Controller
               control={formControl.control}
               name="phone"
               render={({ field }) => (
-                <TextInput
+                <TextInPutWithErrorText
                   label="Phone Number format +123#########"
                   value={field.value}
                   onChangeText={field.onChange}
-                  error={errors.phone != null}
+                  errors={errors.phone as Errors}
                 />
               )}
             />
-            {errors.phone != null && <SmallErrorText text={errors.phone.message} />}
           </InputWrapper>
         </View>
 

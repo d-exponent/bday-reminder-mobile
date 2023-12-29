@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Asset } from 'expo-asset'
-import settings from 'infrastructure/settings'
 import React from 'react'
 import { Card, Text } from 'react-native-paper'
 
@@ -12,10 +10,8 @@ const getFormattedDate = (month: number, day: number) =>
   new Date(currentYear, month, day).toDateString().slice(0, 10)
 
 export const BirthdayInfoCard = (props: BirthdayInfo) => {
-  const uri =
-    props?.imageCover === undefined
-      ? Asset.fromModule(require('../../../../assets/default-birthday.jpg')).uri
-      : `${settings.serverUrl}/users/me/birthdays/images/${props.imageCover}`
+  const uri = Asset.fromModule(require('../../../../assets/default-birthday.jpg')).uri
+  // const uri = props?.imageCover ?? Asset.fromModule(require('../../../../assets/default-birthday.jpg')).uri
 
   return (
     <Card>

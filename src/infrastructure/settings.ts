@@ -9,5 +9,5 @@ export default {
     accessCode: /^[0-9]{4,8}$/
   },
 
-  serverUrl: 'https://db-rm.vercel.app/api/v1'
+  serverUrl: 'https://bdrm.eclipsedev.net/api/v1'
 } as const
