@@ -52,7 +52,7 @@ const GotoAuthButtonsBox = styled.View`
 type Props = NativeStackScreenProps<StackNavigatorsList, 'Home'>
 
 //  Current Background Image (welcome.jpg) by Gerald Berliner. https://unsplash.com/@geraberl
-const uri = Asset.fromModule(require('../../assets/welcome.jpg')).uri
+const { uri } = Asset.fromModule(require('../../assets/welcome.jpg'))
 
 const Home = (props: Props) => {
   const { authStatus } = useUserAuthentication()
@@ -65,7 +65,7 @@ const Home = (props: Props) => {
 
   return (
     <Container>
-      <BackGroundImage source={{ uri }} resizeMode='cover'>
+      <BackGroundImage source={{ uri }} resizeMode="cover">
         <SafeAreaBox>
           <WelcomeBox>
             <WelcomeHeaderBox>
@@ -74,8 +74,8 @@ const Home = (props: Props) => {
             <WelcomeMessageBox>
               <WelcomeMessage>
                 This is where we ensure that you never forget the birthdays of your
-                loved ones. We have got your back 24/7 working tirelessly
-                to ensure that you get that notification to remeber.
+                loved ones. We have got your back 24/7 working tirelessly to ensure
+                that you get that notification to remeber.
               </WelcomeMessage>
             </WelcomeMessageBox>
           </WelcomeBox>

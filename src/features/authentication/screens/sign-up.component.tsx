@@ -102,7 +102,6 @@ const SignUpForm = (props: Props) => {
                 />
               )}
             />
-
           </InputWrapper>
           <InputWrapper>
             <Controller
@@ -117,7 +116,6 @@ const SignUpForm = (props: Props) => {
                 />
               )}
             />
-
           </InputWrapper>
           <InputWrapper>
             <Controller

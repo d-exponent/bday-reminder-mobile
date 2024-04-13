@@ -26,6 +26,7 @@ const UserProfile = (props: Props) => {
   const onLogoutPress = () => {
     logout().then(goHome).catch(goHome)
   }
+
   return (
     <SafeAreaBox>
       <CenteredSafeBox>

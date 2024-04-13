@@ -86,7 +86,6 @@ export const SubmitAccessCodeForm = (props: Props) => {
               />
             )}
           />
-
         </View>
         <View>
           <SquareButton

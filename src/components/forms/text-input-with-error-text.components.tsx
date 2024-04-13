@@ -25,8 +25,8 @@ export const TextInPutWithErrorText = (props: Props) => {
         error={props.errors != null}
         onChangeText={props.onChangeText}
       />
-      <HelperText type='error' visible={props.errors != null}>
-      {props.errors?.message}
+      <HelperText type="error" visible={props.errors != null}>
+        {props.errors?.message}
       </HelperText>
     </>
   )

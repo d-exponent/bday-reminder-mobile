@@ -11,7 +11,10 @@ import useUserNotification from 'hooks/useUserNotification'
 
 import { ButtonWithHideKeyboard } from 'components/helpers/button-with-hide-keyboard.component'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
-import { type Errors, TextInPutWithErrorText } from 'components/forms/text-input-with-error-text.components'
+import {
+  type Errors,
+  TextInPutWithErrorText
+} from 'components/forms/text-input-with-error-text.components'
 import { handleFetchErrorMessage } from 'helpers/api/axios'
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { type StackNavigatorsList } from 'navigators/types'
@@ -125,10 +128,11 @@ const UploadBirthdayForm = (props: Props) => {
             name="name"
             render={({ field }) => (
               <TextInPutWithErrorText
-                label='Name'
+                label="Name"
                 value={field.value}
                 onChangeText={field.onChange}
-                errors={errors.name as Errors}/>
+                errors={errors.name as Errors}
+              />
             )}
           />
 

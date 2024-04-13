@@ -10,7 +10,9 @@ const getFormattedDate = (month: number, day: number) =>
   new Date(currentYear, month, day).toDateString().slice(0, 10)
 
 export const BirthdayInfoCard = (props: BirthdayInfo) => {
-  const uri = Asset.fromModule(require('../../../../assets/default-birthday.jpg')).uri
+  const uri = Asset.fromModule(
+    require('../../../../assets/default-birthday.jpg')
+  ).uri
   // const uri = props?.imageCover ?? Asset.fromModule(require('../../../../assets/default-birthday.jpg')).uri
 
   return (
