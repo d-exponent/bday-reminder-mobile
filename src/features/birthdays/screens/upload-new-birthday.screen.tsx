@@ -11,7 +11,10 @@ import useUserNotification from 'hooks/useUserNotification'
 
 import { ButtonWithHideKeyboard } from 'components/helpers/button-with-hide-keyboard.component'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
-import { type Errors, TextInPutWithErrorText } from 'components/forms/text-input-with-error-text.components'
+import {
+  type Errors,
+  TextInPutWithErrorText
+} from 'components/forms/text-input-with-error-text.components'
 import { handleFetchErrorMessage } from 'helpers/api/axios'
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { type StackNavigatorsList } from 'navigators/types'
@@ -41,17 +44,19 @@ const UploadBirthdayForm = (props: Props) => {
   const { showNotification } = useUserNotification()
   const { loadingAction, setLoadingAction } = useLoading()
 
-  const onPickImagePress = React.useCallback(async () => {
+  const onPickImagePress = async () => {
     setDisableSignUpBtn(true)
     const action = imageUri === null ? 'saved' : 'updated'
 
+    const imagePickerParams: ImagePicker.ImagePickerOptions = {
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    }
+
     try {
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1
-      })
+      const pickerResult = await ImagePicker.launchImageLibraryAsync(imagePickerParams)
 
       if (pickerResult.canceled) throw new Error()
 
@@ -61,7 +66,7 @@ const UploadBirthdayForm = (props: Props) => {
       showNotification(`Image could not be ${action}`)
     }
     setDisableSignUpBtn(false)
-  }, [imageUri])
+  }
 
   const formControl = useForm({
     resolver: yupResolver(birthdaySchema),
@@ -125,10 +130,11 @@ const UploadBirthdayForm = (props: Props) => {
             name="name"
             render={({ field }) => (
               <TextInPutWithErrorText
-                label='Name'
+                label="Name"
                 value={field.value}
                 onChangeText={field.onChange}
-                errors={errors.name as Errors}/>
+                errors={errors.name as Errors}
+              />
             )}
           />
 
