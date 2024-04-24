@@ -19,6 +19,8 @@ import { handleFetchErrorMessage } from 'helpers/api/axios'
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { type StackNavigatorsList } from 'navigators/types'
 
+import axios from 'axios'
+
 // YUP CONFIGURATION START
 const positiveYupIntegers = (min: number, max: number) =>
   yup.number().positive().integer().min(min).max(max)
@@ -36,6 +38,26 @@ const birthdaySchema = yup.object({
 // YUP CONFIGURATION END
 type Props = NativeStackScreenProps<StackNavigatorsList, 'UploadNewBirthday'>
 
+const createFormData = (uri: string) => {
+  const fileName = uri.split('/').pop()
+
+  if (!fileName) return null
+
+  const fileType = fileName.split('.').pop()
+  const imageConfig: any = {
+    name: fileName,
+    uri,
+    type: `image/${fileType}`
+  }
+
+  const formData = new FormData()
+  formData.append('event', '64892168c709274d688b78eb')
+  formData.append('caption', 'This is a test caption from axios React Native')
+  formData.append('files', imageConfig)
+
+  return formData
+}
+
 const UploadBirthdayForm = (props: Props) => {
   const [imageUri, setImageUri] = React.useState<string | null>(null)
   const [disableSignUpBtn, setDisableSignUpBtn] = React.useState(false)
@@ -44,27 +66,52 @@ const UploadBirthdayForm = (props: Props) => {
   const { showNotification } = useUserNotification()
   const { loadingAction, setLoadingAction } = useLoading()
 
-  const onPickImagePress = React.useCallback(async () => {
+  const onPickImagePress = async () => {
     setDisableSignUpBtn(true)
     const action = imageUri === null ? 'saved' : 'updated'
 
+    const imagePickerParams: ImagePicker.ImagePickerOptions = {
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    }
+
     try {
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1
-      })
+      const pickerResult =
+        await ImagePicker.launchImageLibraryAsync(imagePickerParams)
 
       if (pickerResult.canceled) throw new Error()
 
+      try {
+
+        console.log('🙌🙌✔ Assets', pickerResult.assets[0])
+        const { uri } = pickerResult.assets[0]
+        const data = createFormData(uri)
+
+        if (!data) throw new Error('Could not get formdata')
+
+        const url =
+          'https://api.taronapp.com/upload-service/api/v1/upload/highlight/65c1d79dd478a000089b0099'
+
+        const response = await axios.post(url, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+
+        console.log('✔✔🙌Success', response.data);
+      } catch (e: any) {
+        console.log('🛑🛑', e.message)
+      }
+
       setImageUri(pickerResult.assets[0].uri)
       showNotification(`The image was ${action} successfully`)
-    } catch (_) {
+    } catch {
       showNotification(`Image could not be ${action}`)
     }
     setDisableSignUpBtn(false)
-  }, [imageUri])
+  }
 
   const formControl = useForm({
     resolver: yupResolver(birthdaySchema),
