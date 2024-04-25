@@ -19,8 +19,6 @@ import { handleFetchErrorMessage } from 'helpers/api/axios'
 import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { type StackNavigatorsList } from 'navigators/types'
 
-import axios from 'axios'
-
 // YUP CONFIGURATION START
 const positiveYupIntegers = (min: number, max: number) =>
   yup.number().positive().integer().min(min).max(max)
@@ -38,24 +36,20 @@ const birthdaySchema = yup.object({
 // YUP CONFIGURATION END
 type Props = NativeStackScreenProps<StackNavigatorsList, 'UploadNewBirthday'>
 
-const createFormData = (uri: string) => {
+const parseUriToFormObject = (uri: string) => {
   const fileName = uri.split('/').pop()
 
-  if (!fileName) return null
+  if (fileName == null) return null
 
   const fileType = fileName.split('.').pop()
-  const imageConfig: any = {
-    name: fileName,
+
+  const imageConfig = {
     uri,
+    name: fileName,
     type: `image/${fileType}`
   }
 
-  const formData = new FormData()
-  formData.append('event', '64892168c709274d688b78eb')
-  formData.append('caption', 'This is a test caption from axios React Native')
-  formData.append('files', imageConfig)
-
-  return formData
+  return imageConfig
 }
 
 const UploadBirthdayForm = (props: Props) => {
@@ -82,28 +76,6 @@ const UploadBirthdayForm = (props: Props) => {
         await ImagePicker.launchImageLibraryAsync(imagePickerParams)
 
       if (pickerResult.canceled) throw new Error()
-
-      try {
-
-        console.log('🙌🙌✔ Assets', pickerResult.assets[0])
-        const { uri } = pickerResult.assets[0]
-        const data = createFormData(uri)
-
-        if (!data) throw new Error('Could not get formdata')
-
-        const url =
-          'https://api.taronapp.com/upload-service/api/v1/upload/highlight/65c1d79dd478a000089b0099'
-
-        const response = await axios.post(url, data, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-
-        console.log('✔✔🙌Success', response.data);
-      } catch (e: any) {
-        console.log('🛑🛑', e.message)
-      }
 
       setImageUri(pickerResult.assets[0].uri)
       showNotification(`The image was ${action} successfully`)
@@ -154,7 +126,9 @@ const UploadBirthdayForm = (props: Props) => {
     showNotification('Processing...')
     const formData = new FormData()
 
-    if (typeof imageUri === 'string') formData.append('cover', imageUri)
+    if (typeof imageUri === 'string') {
+      formData.append('cover', parseUriToFormObject(imageUri) as any)
+    }
 
     // Some fields are optional hence this mildly elaborate setup.
     Object.entries(data).forEach(([key, value]) => {
