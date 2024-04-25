@@ -6,27 +6,15 @@ import { Pressable } from 'react-native'
 import styled from 'styled-components/native'
 
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
-import {
-  TextInPutWithErrorText,
-  type Errors
-} from 'components/forms/text-input-with-error-text.components'
+import { TextInPutWithErrorText, type Errors } from 'components/forms/text-input-with-error-text.components'
 import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
 import useUserNotification from 'hooks/useUserNotification'
 import { type StackNavigatorsList } from 'navigators/types'
 
-import baseAxios, {
-  handleFetchErrorMessage,
-  handleFetchSuccessMessage
-} from 'helpers/api/axios'
+import baseAxios, { getErrorMessage, getSuccessMessage } from 'helpers/api/axios'
 
-import {
-  GotoOtherFormText,
-  InputWrapper,
-  Screen,
-  SquareButton,
-  WelcomeHeader
-} from '../styles'
+import { GotoOtherFormText, InputWrapper, Screen, SquareButton, WelcomeHeader } from '../styles'
 
 const GotoSignUpPressable = styled(Pressable)`
   flex-direction: row;
@@ -34,9 +22,7 @@ const GotoSignUpPressable = styled(Pressable)`
   padding: ${props => props.theme.space[3]};
 `
 
-const loginDataSchema = yup
-  .object()
-  .shape(validate('email') as { email: stringSchema })
+const loginDataSchema = yup.object().shape(validate('email') as { email: stringSchema })
 
 type Props = NativeStackScreenProps<StackNavigatorsList, 'Login'>
 
@@ -55,26 +41,22 @@ const GetAccessCodeForm = (props: Props) => {
 
   type formData = yup.InferType<typeof loginDataSchema>
 
-  const onLoginPress = (formData: formData) => {
+  const onLoginPress = async (formData: formData) => {
     setLoadingAction(true)
-    let message
-    baseAxios
-      .get(`auth/${formData.email}`)
-      .then(response => {
-        formControl.reset()
-        message = handleFetchSuccessMessage(response)
-        showNotification(message)
-        setLoadingAction(false)
-        props.navigation.navigate('SubmitAccessCode', {
-          userEmail: formData.email.toLowerCase()
-        })
-      })
-      .catch(e => {
-        console.log(e)
-        setLoadingAction(false)
-        message = handleFetchErrorMessage(e)
-        showNotification(message)
-      })
+    const userEmail = formData.email.toLowerCase()
+
+    try {
+      const response = await baseAxios.get(`auth/${userEmail}`)
+
+      showNotification(getSuccessMessage(response))
+      setLoadingAction(false)
+
+      formControl.reset()
+      props.navigation.navigate('SubmitAccessCode', { userEmail })
+    } catch (e) {
+      showNotification(getErrorMessage(e))
+      setLoadingAction(false)
+    }
   }
 
   return (

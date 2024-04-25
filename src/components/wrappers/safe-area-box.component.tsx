@@ -27,8 +27,7 @@ const SafeAreaBox = ({ disableSafeArea = false, ...props }: SaveAreaBoxProps) =>
   const safeAreaInsets = useSafeAreaInsets()
 
   const insets = React.useMemo((): EdgeInsets => {
-    const insetOnDisableSafeAreaProp = (inset: number) =>
-      disableSafeArea ? 0 : inset
+    const insetOnDisableSafeAreaProp = (inset: number) => (disableSafeArea ? 0 : inset)
 
     return {
       top: insetOnDisableSafeAreaProp(safeAreaInsets.top),

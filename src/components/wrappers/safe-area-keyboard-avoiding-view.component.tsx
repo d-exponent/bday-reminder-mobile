@@ -14,9 +14,7 @@ const BEHAVIOUR = Platform.OS === 'ios' ? 'padding' : 'height'
 export const SafeAreaKeyBoardAviodingView = (props: ReactChildrenProp) => {
   return (
     <SafeAreaBox>
-      <KeyBoardAviodingViewContainer behavior={BEHAVIOUR}>
-        {props.children}
-      </KeyBoardAviodingViewContainer>
+      <KeyBoardAviodingViewContainer behavior={BEHAVIOUR}>{props.children}</KeyBoardAviodingViewContainer>
     </SafeAreaBox>
   )
 }

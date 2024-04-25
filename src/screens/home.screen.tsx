@@ -73,9 +73,8 @@ const Home = (props: Props) => {
             </WelcomeHeaderBox>
             <WelcomeMessageBox>
               <WelcomeMessage>
-                This is where we ensure that you never forget the birthdays of your
-                loved ones. We have got your back 24/7 working tirelessly to ensure
-                that you get that notification to remeber.
+                This is where we ensure that you never forget the birthdays of your loved ones. We have got your back
+                24/7 working tirelessly to ensure that you get that notification to remeber.
               </WelcomeMessage>
             </WelcomeMessageBox>
           </WelcomeBox>

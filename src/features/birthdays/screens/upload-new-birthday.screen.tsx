@@ -1,89 +1,42 @@
+import React from 'react'
+import { View } from 'react-native'
+import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
-import * as ImagePicker from 'expo-image-picker'
-import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { View } from 'react-native'
-
-import yup from 'helpers/validations/yup-config'
-import useLoading from 'hooks/useLoading'
-import useUserNotification from 'hooks/useUserNotification'
 
 import { ButtonWithHideKeyboard } from 'components/helpers/button-with-hide-keyboard.component'
 import { SafeAreaKeyBoardAviodingView } from 'components/wrappers/safe-area-keyboard-avoiding-view.component'
-import {
-  type Errors,
-  TextInPutWithErrorText
-} from 'components/forms/text-input-with-error-text.components'
-import { handleFetchErrorMessage } from 'helpers/api/axios'
-import useAxiosPrivate from 'hooks/useAxiosPrivate'
 import { type StackNavigatorsList } from 'navigators/types'
+import { type Errors, TextInPutWithErrorText } from 'components/forms/text-input-with-error-text.components'
+
+import yup from 'helpers/validations/yup-config'
+import { getErrorMessage } from 'helpers/api/axios'
+
+import useLoading from 'hooks/useLoading'
+import useAxiosPrivate from 'hooks/useAxiosPrivate'
+import useImagePicker from 'hooks/useImagePicker'
+import useUserNotification from 'hooks/useUserNotification'
 
 // YUP CONFIGURATION START
-const positiveYupIntegers = (min: number, max: number) =>
-  yup.number().positive().integer().min(min).max(max)
-
-const optionalYupString = () => yup.string().optional()
+const positiveYupIntegers = (min: number, max: number) => yup.number().positive().integer().min(min).max(max)
 
 const birthdaySchema = yup.object({
   name: yup.string().required('A birthday must have a name'),
   month: positiveYupIntegers(1, 12).required('A birthday must have a month'),
   day: positiveYupIntegers(1, 31).required('A birthday must have a day'),
   phone: yup.string().phone().optional(),
-  email: optionalYupString().email(),
-  comments: optionalYupString()
+  email: yup.string().optional().email(),
+  comments: yup.string().optional()
 })
+
 // YUP CONFIGURATION END
 type Props = NativeStackScreenProps<StackNavigatorsList, 'UploadNewBirthday'>
 
-const parseUriToFormObject = (uri: string) => {
-  const fileName = uri.split('/').pop()
-
-  if (fileName == null) return null
-
-  const fileType = fileName.split('.').pop()
-
-  const imageConfig = {
-    uri,
-    name: fileName,
-    type: `image/${fileType}`
-  }
-
-  return imageConfig
-}
-
 const UploadBirthdayForm = (props: Props) => {
-  const [imageUri, setImageUri] = React.useState<string | null>(null)
-  const [disableSignUpBtn, setDisableSignUpBtn] = React.useState(false)
-
   const axiosPrivate = useAxiosPrivate()
   const { showNotification } = useUserNotification()
   const { loadingAction, setLoadingAction } = useLoading()
-
-  const onPickImagePress = async () => {
-    setDisableSignUpBtn(true)
-    const action = imageUri === null ? 'saved' : 'updated'
-
-    const imagePickerParams: ImagePicker.ImagePickerOptions = {
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1
-    }
-
-    try {
-      const pickerResult =
-        await ImagePicker.launchImageLibraryAsync(imagePickerParams)
-
-      if (pickerResult.canceled) throw new Error()
-
-      setImageUri(pickerResult.assets[0].uri)
-      showNotification(`The image was ${action} successfully`)
-    } catch {
-      showNotification(`Image could not be ${action}`)
-    }
-    setDisableSignUpBtn(false)
-  }
+  const { uri, parsedImage, pickImage } = useImagePicker()
 
   const formControl = useForm({
     resolver: yupResolver(birthdaySchema),
@@ -104,30 +57,28 @@ const UploadBirthdayForm = (props: Props) => {
   const uploadBirthday = async (birthdayData: FormData) => {
     try {
       showNotification('uploading birthday')
-      const url = 'users/me/birthdays'
-      const response = await axiosPrivate.post(url, birthdayData, {
+
+      const config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      })
-      showNotification(
-        `${response.data.data.name}'s birthday was added successfully`
-      )
+      }
+      const response = await axiosPrivate.post('users/me/birthdays', birthdayData, config)
+      showNotification(`${response.data.data.name}'s birthday was added successfully`)
     } catch (e) {
-      showNotification(handleFetchErrorMessage(e))
+      showNotification(getErrorMessage(e))
     }
     setLoadingAction(false)
   }
 
-  const onUploadBirthdayPress = async (
-    data: yup.InferType<typeof birthdaySchema>
-  ) => {
+  const onUploadBirthdayPress = async (data: yup.InferType<typeof birthdaySchema>) => {
     setLoadingAction(true)
     showNotification('Processing...')
+
     const formData = new FormData()
 
-    if (typeof imageUri === 'string') {
-      formData.append('cover', parseUriToFormObject(imageUri) as any)
+    if (parsedImage != null) {
+      formData.append('cover', parsedImage as any)
     }
 
     // Some fields are optional hence this mildly elaborate setup.
@@ -228,14 +179,11 @@ const UploadBirthdayForm = (props: Props) => {
         </View>
 
         <View>
-          <ButtonWithHideKeyboard
-            onPress={onPickImagePress}
-            text={imageUri == null ? 'Add Photo' : 'Change photo'}
-          />
+          <ButtonWithHideKeyboard onPress={pickImage} text={uri == null ? 'Add Photo' : 'Change photo'} />
 
           <ButtonWithHideKeyboard
             loading={loadingAction}
-            disabled={disableSignUpBtn}
+            // disabled={disableSignUpBtn}
             onPress={formControl.handleSubmit(onUploadBirthdayPress)}
             text="UPLOAD"
           />

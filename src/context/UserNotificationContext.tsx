@@ -6,8 +6,7 @@ interface UserNotificationContextValue {
   showNotification: (msg: string) => void
 }
 
-const UserNotificationContext =
-  React.createContext<UserNotificationContextValue | null>(null)
+const UserNotificationContext = React.createContext<UserNotificationContextValue | null>(null)
 
 const UserNotificationProvider = (props: ReactChildrenProp) => {
   const [snakcBarVisible, setSnackBarVisible] = React.useState(false)
@@ -42,8 +41,4 @@ const UserNotificationProvider = (props: ReactChildrenProp) => {
   )
 }
 
-export {
-  UserNotificationContext,
-  UserNotificationProvider as default,
-  type UserNotificationContextValue
-}
+export { UserNotificationContext, UserNotificationProvider as default, type UserNotificationContextValue }

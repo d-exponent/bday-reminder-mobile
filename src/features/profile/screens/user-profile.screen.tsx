@@ -5,10 +5,7 @@ import { Button } from 'react-native-paper'
 import styled from 'styled-components/native'
 
 import useUserAuthentication from 'features/authentication/hooks/useUserAuthentication'
-import {
-  type BottomTabNavigatorsList,
-  type StackNavigatorsList
-} from 'navigators/types'
+import { type BottomTabNavigatorsList, type StackNavigatorsList } from 'navigators/types'
 
 const CenteredSafeBox = styled.View`
   background-color: red;

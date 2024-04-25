@@ -3,10 +3,7 @@ import React from 'react'
 
 import baseAxios from 'helpers/api/axios'
 import { axiosRefresh } from '../helpers/api/axios'
-import {
-  accessTokenStore as ats,
-  handleSaveTokens
-} from '../helpers/api/tokenStorage'
+import { accessTokenStore as ats, handleSaveTokens } from '../helpers/api/tokenStorage'
 
 const useAxiosPrivate = () => {
   // Attach access token to the outgoing request if absent
@@ -19,7 +16,7 @@ const useAxiosPrivate = () => {
           if (!hasAuthHeader && (token = await ats.getToken()) !== null) {
             config.headers.Authorization = 'Bearer ' + token
           }
-        } catch (_) {}
+        } catch {}
         return config
       },
       error => error
@@ -36,8 +33,6 @@ const useAxiosPrivate = () => {
 
     const responseInterceptor = baseAxios.interceptors.response.use(
       resposne => resposne,
-
-      // Attach new access token to the error response and try again on 401 status code response
       async error => {
         const previousRequest = error.config
         if (previousRequest?._retry !== true && error.response?.status === 401) {
@@ -48,8 +43,6 @@ const useAxiosPrivate = () => {
 
             const { data } = await promise
 
-            console.log('🛑 Axios Private Response Interceptor FIle', data) // TODO: remove
-
             if ('accessToken' in data) {
               previousRequest.headers.Authorization = 'Bearer ' + data.accessToken
 
@@ -59,7 +52,7 @@ const useAxiosPrivate = () => {
               })
             }
             return baseAxios(previousRequest)
-          } catch (_) {}
+          } catch {}
         }
         return Promise.reject(error)
       }

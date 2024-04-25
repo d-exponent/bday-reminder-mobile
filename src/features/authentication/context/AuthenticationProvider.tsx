@@ -1,11 +1,7 @@
 import React from 'react'
 
 import { axiosRefresh } from 'helpers/api/axios'
-import {
-  accessTokenStore,
-  handleSaveTokens,
-  refreshTokenStore
-} from 'helpers/api/tokenStorage'
+import { accessTokenStore, handleSaveTokens, refreshTokenStore } from 'helpers/api/tokenStorage'
 import { type ReactChildrenProp } from '../../../../@types.birthday'
 
 interface AuthenticationContextValue {
@@ -14,9 +10,7 @@ interface AuthenticationContextValue {
   logout: () => Promise<void>
 }
 
-const AuthenticationContext = React.createContext<AuthenticationContextValue | null>(
-  null
-)
+const AuthenticationContext = React.createContext<AuthenticationContextValue | null>(null)
 
 const AuthenticationProvider = (props: ReactChildrenProp) => {
   const [authStatus, setAuthStatus] = React.useState<boolean | null>(null)
@@ -48,10 +42,7 @@ const AuthenticationProvider = (props: ReactChildrenProp) => {
 
   const onLogoutPress = async () => {
     try {
-      await Promise.allSettled([
-        refreshTokenStore.removeToken(),
-        accessTokenStore.removeToken()
-      ])
+      await Promise.allSettled([refreshTokenStore.removeToken(), accessTokenStore.removeToken()])
     } catch (_) {}
     setAuthStatus(false)
   }
@@ -62,15 +53,7 @@ const AuthenticationProvider = (props: ReactChildrenProp) => {
     changeAuthStatusTo: status => setAuthStatus(status)
   }
 
-  return (
-    <AuthenticationContext.Provider value={contextValue}>
-      {props.children}
-    </AuthenticationContext.Provider>
-  )
+  return <AuthenticationContext.Provider value={contextValue}>{props.children}</AuthenticationContext.Provider>
 }
 
-export {
-  AuthenticationContext,
-  AuthenticationProvider as default,
-  type AuthenticationContextValue
-}
+export { AuthenticationContext, AuthenticationProvider as default, type AuthenticationContextValue }

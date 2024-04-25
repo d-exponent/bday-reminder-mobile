@@ -32,24 +32,22 @@ export const axiosWithAbort = (config: AxiosWithAbortConfig): AxiosWithAbort => 
 
 export const axiosRefresh = async (options = {}) => {
   let url = 'auth/refresh'
+
   try {
     const token = await refreshTokenStore.getToken()
-    if (token?.length != null) url += `?refreshToken=${token}`
-  } catch (_) {}
+    if (token?.length != null) {
+      url += `?refreshToken=${token}`
+    }
+  } catch {}
   return axiosWithAbort({ url, params: options })
 }
 
-export const handleFetchErrorMessage = (
-  error: unknown,
-  alternateGenericMessage?: string
-): string =>
+export const getErrorMessage = (error: unknown, alternateGenericMessage?: string): string =>
   isAxiosError(error) && error.response?.data?.message !== undefined
     ? (error.response.data.message as string)
     : alternateGenericMessage ?? 'Something Went wrong 😥'
 
-export const handleFetchSuccessMessage = (
-  response: AxiosResponse,
-  alternateGenericMessage?: string
-) => response?.data?.message ?? alternateGenericMessage ?? 'Success ✔'
+export const getSuccessMessage = (response: AxiosResponse, alternateGenericMessage?: string) =>
+  response?.data?.message ?? alternateGenericMessage ?? 'Success ✔'
 
 export default baseAxios

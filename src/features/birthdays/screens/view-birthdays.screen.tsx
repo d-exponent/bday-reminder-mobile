@@ -12,10 +12,7 @@ import {
 
 import { type BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import SafeAreaBox from 'components/wrappers/safe-area-box.component'
-import type {
-  BottomTabNavigatorsList as BTNL,
-  StackNavigatorsList as SNL
-} from 'navigators/types'
+import type { BottomTabNavigatorsList as BTNL, StackNavigatorsList as SNL } from 'navigators/types'
 import { type BirthdayInfo } from '../types'
 
 const BirthdayBigBox = styled.View`

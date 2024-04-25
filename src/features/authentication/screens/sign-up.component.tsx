@@ -5,15 +5,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { Pressable, View } from 'react-native'
 import styled from 'styled-components/native'
 
-import {
-  TextInPutWithErrorText,
-  type Errors
-} from 'components/forms/text-input-with-error-text.components'
+import { TextInPutWithErrorText, type Errors } from 'components/forms/text-input-with-error-text.components'
 
-import baseAxios, {
-  handleFetchErrorMessage,
-  handleFetchSuccessMessage
-} from 'helpers/api/axios'
+import baseAxios, { getErrorMessage, getSuccessMessage } from 'helpers/api/axios'
 import yup, { validate, type stringSchema } from 'helpers/validations/yup-config'
 import useLoading from 'hooks/useLoading'
 
@@ -71,7 +65,7 @@ const SignUpForm = (props: Props) => {
       .post('users/me/sign-up', formData)
       .then(response => {
         formControl.reset()
-        message = handleFetchSuccessMessage(response)
+        message = getSuccessMessage(response)
         showNotification(message)
         setLoadingAction(false)
         props.navigation.navigate('SubmitAccessCode', {
@@ -79,7 +73,7 @@ const SignUpForm = (props: Props) => {
         })
       })
       .catch(e => {
-        message = handleFetchErrorMessage(e)
+        message = getErrorMessage(e)
         showNotification(message)
         setLoadingAction(false)
       })
@@ -133,11 +127,7 @@ const SignUpForm = (props: Props) => {
           </InputWrapper>
         </View>
 
-        <SquareButton
-          loading={loadingAction}
-          onPress={formControl.handleSubmit(onSignUpPress)}
-          text="SIGN UP"
-        />
+        <SquareButton loading={loadingAction} onPress={formControl.handleSubmit(onSignUpPress)} text="SIGN UP" />
 
         <GotoLoginPressable onPressIn={() => props.navigation.navigate('Login')}>
           <LoginAccountText>Login to existing account?</LoginAccountText>

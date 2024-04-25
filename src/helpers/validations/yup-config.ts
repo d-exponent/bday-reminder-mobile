@@ -60,10 +60,7 @@ const validate = (...args: validateArgs): Record<string, stringSchema> => {
         validators[arg] = yup.string().required('Name is required')
         break
       case 'accessCode':
-        validators[arg] = yup
-          .string()
-          .required('Access code is required')
-          .accessCode()
+        validators[arg] = yup.string().required('Access code is required').accessCode()
         break
       default:
         throw new Error('Invalid validator key') // Unlikely to ever happen

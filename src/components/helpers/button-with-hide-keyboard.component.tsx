@@ -2,13 +2,7 @@ import { hideKeyboard } from 'helpers/utils'
 import React from 'react'
 import { Button } from 'react-native-paper'
 
-type Mode =
-  | 'text'
-  | 'contained'
-  | 'outlined'
-  | 'elevated'
-  | 'contained-tonal'
-  | undefined
+type Mode = 'text' | 'contained' | 'outlined' | 'elevated' | 'contained-tonal' | undefined
 
 interface Props {
   text: string
@@ -18,12 +12,7 @@ interface Props {
   onPress: () => void
 }
 
-export const ButtonWithHideKeyboard = ({
-  loading = false,
-  mode = 'contained',
-  disabled = false,
-  ...props
-}: Props) => (
+export const ButtonWithHideKeyboard = ({ loading = false, mode = 'contained', disabled = false, ...props }: Props) => (
   <Button
     loading={loading}
     mode={mode}

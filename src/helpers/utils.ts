@@ -5,7 +5,18 @@ export const hideKeyboard = () => {
   if (Keyboard.isVisible()) Keyboard.dismiss()
 }
 
-// export const getAsset = (file: string) => {
-//   // eslint-disable-next-line @typescript-eslint/no-var-requires
-//   return Asset.fromModule(require('../../assets/' + file)).uri
-// }
+export const parseUriToFormObject = (uri: string) => {
+  const fileName = uri.split('/').pop()
+
+  if (fileName == null) return null
+
+  const fileType = fileName.split('.').pop()
+
+  const imageConfig = {
+    uri,
+    name: fileName,
+    type: `image/${fileType}`
+  }
+
+  return imageConfig
+}

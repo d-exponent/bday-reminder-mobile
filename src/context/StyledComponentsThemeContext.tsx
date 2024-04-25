@@ -29,8 +29,7 @@ interface Theme {
   fontWeights: FontWeights
 }
 
-const StyledComponentsThemeContext =
-  React.createContext<StyledComponentsThemeContextValue | null>(null)
+const StyledComponentsThemeContext = React.createContext<StyledComponentsThemeContextValue | null>(null)
 
 const StyledComponentsThemeProvider = (props: ReactChildrenProp) => {
   const [isLightTheme, setIsLightTheme] = React.useState<boolean>(true)
